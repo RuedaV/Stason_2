@@ -34,7 +34,7 @@ else
     z = sort(y);
     n = length(z);
 %     x = z;
-    x = z(round(0.05*n)+1:round(0.95*n),1);
+    x = z(round(0.07*n)+1:round(0.93*n),1);
     figure1 = figure;
     set(figure1,'defaulttextinterpreter','latex');
     %histfit(x, nbins, 'kernel');
