@@ -82,7 +82,7 @@ classdef GJR_General < GJR_BaseModel
                     self.beta0*h2(i-1,1) + self.gamma0*h2(i-1,1)*z(i-1,1)^2*(z(i-1,1) < 0);
                 SimData(i,1) = SimData(i,1) + self.rho0*SimData(i-1,1) + self.delta0*h2(i,1) + sqrt(h2(i,1))*z(i,1);
             end
-            
+            self.sigma2 = h2;
         end
         
         function setDaily (self, d)                           
@@ -94,22 +94,19 @@ classdef GJR_General < GJR_BaseModel
             h2_pred = self.omega + self.alpha*e(end,1)^2 ...
                     + self.beta*h2(end,1) + self.gamma*(e(end,1)<0)*e(end,1)^2;
                 
-            VaR = (self.data(end, 1) - e(end, 1)) + sqrt(h2(end,1))*norminv(0.05,0,1);
+            w1 = (mod(self.day, 5) == 1);
+            w2 = (mod(self.day, 5) == 2);
+            w3 = (mod(self.day, 5) == 3);
+            w4 = (mod(self.day, 5) == 4);
+            w5 = (mod(self.day, 5) == 0);
+            
+            VaR = self.mu + self.rho*self.data(end,1) + self.delta*h2_pred + self.theta1*w1(end,1)...
+            + self.theta2*w2(end,1) + self.theta3*w3(end,1) + self.theta4*w4(end,1) + self.theta5*w5(end,1) ...
+            + sqrt(h2_pred)*norminv(0.05,0,1);
             VaR_exceeded = (VaR > self.data_plus(end,1));
             
-            day_tmp = self.day;
-            data_temp = self.data;
-            self.data = self.data_plus;
-            self.day  = self.day_plus;
-            self.Switch();
-            [h2_plus, e_plus] = self.CondVar();
-            h2_proxy = h2_plus(end, 1);
-            self.Switch();
-            
-            self.data = data_temp;
-            self.day = day_tmp;
-            loss = QLIKE(h2_proxy, h2_pred);
-            loss2 = QLIKE2(h2_proxy, h2_pred);
+            loss  = QLIKE(self.sigma2(end,1), h2_pred);
+            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
         end
     end
 

@@ -82,7 +82,7 @@ classdef GJR_Ssn < GJR_BaseModel
             end     
             
             SimData = w*[self.theta10, self.theta20, self.theta30, self.theta40, self.theta50]' + sqrt(h2).*z;
-            
+            self.sigma2 = h2;
         end
         
         function setDaily (self, d)                           
@@ -97,19 +97,8 @@ classdef GJR_Ssn < GJR_BaseModel
             VaR = (self.data(end, 1) - e(end, 1)) + sqrt(h2(end,1))*norminv(0.05,0,1);
             VaR_exceeded = (VaR > self.data_plus(end,1));
             
-            day_tmp = self.day;
-            data_temp = self.data;
-            self.data = self.data_plus;
-            self.day  = self.day_plus;
-            self.Switch();
-            [h2_plus, e_plus] = self.CondVar();
-            h2_proxy = h2_plus(end, 1);
-            self.Switch();
-            
-            self.data = data_temp;
-            self.day = day_tmp;
-            loss = QLIKE(h2_proxy, h2_pred);
-            loss2 = QLIKE2(h2_proxy, h2_pred);
+            loss  = QLIKE(self.sigma2(end,1), h2_pred);
+            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
         end
         
     end

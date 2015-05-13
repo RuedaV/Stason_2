@@ -11,6 +11,7 @@ BETTA = 0.93;
 GAMMA = -0.12;
 SIMULATION_NUMBER = 200;
 NBINS = 200;
+p = 0.05;
 %% EGARCH_Const_AR
 fprintf('\n%12s\r', 'EGARCH_Const_AR');
 
@@ -43,14 +44,15 @@ for i = 1:S
     a.data_plus = Data;    
     b.data = Data(1:end-1);
     b.data_plus = Data;
+    b.sigma2 = a.sigma2;
     % True
     a.Estimate();
-    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict();
+    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict(p);
     VaR_a = VaR_a + VaR_exceeded_a;
 %     a.MyDisplay();
     % False    
     b.Estimate();
-    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict();
+    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict(p);
     VaR_b = VaR_b + VaR_exceeded_b;
 %     b.MyDisplay();
     omega(i,1) = (a.omega - b.omega)/omega0;
@@ -78,7 +80,7 @@ fprintf('\n%6s %12s \r', 'Model', 'VaR is exceeded');
 fprintf('%6s %12.6f \n', 'True',    VaR_a);
 fprintf('%6s %12.6f \n', 'False',   VaR_b);
 
-DisplayStats(omega, alpha, beta, gamma, loss, loss2);
+DisplayStats(omega, alpha, beta, gamma, loss);
 
 
 
@@ -115,14 +117,15 @@ for i = 1:S
     a.data_plus = Data;    
     b.data = Data(1:end-1);
     b.data_plus = Data;
+    b.sigma2 = a.sigma2;
         % True
     a.Estimate();
-    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict();
+    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict(p);
     VaR_a = VaR_a + VaR_exceeded_a;
 %     a.MyDisplay();
     % False    
     b.Estimate();
-    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict();
+    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict(p);
     VaR_b = VaR_b + VaR_exceeded_b;
 %     b.MyDisplay();
     omega(i,1) = (a.omega - b.omega)/omega0;
@@ -149,7 +152,7 @@ fprintf('\n%6s %12s \r', 'Model', 'VaR is exceeded');
 fprintf('%6s %12.6f \n', 'True',    VaR_a);
 fprintf('%6s %12.6f \n', 'False',   VaR_b);
 
-DisplayStats(omega, alpha, beta, gamma, loss, loss2);
+DisplayStats(omega, alpha, beta, gamma, loss);
 
 
 
@@ -214,14 +217,15 @@ for i = 1:S
     
     b.data = Data(1:end-1);
     b.data_plus = Data;
+    b.sigma2 = a.sigma2;
     % True
     a.Estimate();
-    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict();
+    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict(p);
     VaR_a = VaR_a + VaR_exceeded_a;
 %     a.MyDisplay();
     % False    
     b.Estimate();
-    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict();
+    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict(p);
     VaR_b = VaR_b + VaR_exceeded_b;
 %     b.MyDisplay();
     omega(i,1) = (a.omega - b.omega)/omega0;
@@ -259,7 +263,7 @@ fprintf('\n%6s %12s \r', 'Model', 'VaR is exceeded');
 fprintf('%6s %12.6f \n', 'True',    VaR_a);
 fprintf('%6s %12.6f \n', 'False',   VaR_b);
 
-DisplayStats(omega, alpha, beta, gamma, loss, loss2);
+DisplayStats(omega, alpha, beta, gamma, loss);
 
 
 
@@ -322,14 +326,15 @@ for i = 1:S
     a.day_plus = Day;
     b.data = Data(1:end-1);
     b.data_plus = Data;
+    b.sigma2 = a.sigma2;
     % True
     a.Estimate();
-    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict();
+    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict(p);
     VaR_a = VaR_a + VaR_exceeded_a;
 %     a.MyDisplay();
     % False    
     b.Estimate();
-    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict();
+    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict(p);
     VaR_b = VaR_b + VaR_exceeded_b;
 %     b.MyDisplay();
     omega(i,1) = (a.omega - b.omega)/omega0;
@@ -356,6 +361,6 @@ fprintf('\n%6s %12s \r', 'Model', 'VaR is exceeded');
 fprintf('%6s %12.6f \n', 'True',    VaR_a);
 fprintf('%6s %12.6f \n', 'False',   VaR_b);
 
-DisplayStats(omega, alpha, beta, gamma, loss, loss2);
+DisplayStats(omega, alpha, beta, gamma, loss);
 
 

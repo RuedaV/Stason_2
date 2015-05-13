@@ -43,7 +43,19 @@ classdef GJR_Const_AR < GJR_BaseModel
                     self.beta0*h2(i-1,1) + self.gamma0*h2(i-1,1)*z(i-1,1)^2*(z(i-1,1) < 0);
                 SimData(i,1) = self.mu0 + self.rho0*SimData(i-1,1) + sqrt(h2(i,1))*z(i,1);
             end
+            self.sigma2 = h2;
+        end
+        
+         function [loss, loss2, VaR_exceeded] = Predict(self, p)
+            [h2, e] = self.CondVar();
+            h2_pred = self.omega + self.alpha*e(end,1)^2 ...
+                    + self.beta*h2(end,1) + self.gamma*(e(end,1)<0)*e(end,1)^2;
+                
+            VaR = self.mu + self.rho*self.data(end,1) + sqrt(h2_pred)*norminv(p,0,1);
+            VaR_exceeded = (VaR > self.data_plus(end,1))
             
+            loss  = QLIKE(self.sigma2(end,1), h2_pred);
+            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
         end
     end
 

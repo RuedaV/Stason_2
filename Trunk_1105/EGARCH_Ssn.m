@@ -73,7 +73,7 @@ classdef EGARCH_Ssn < EGARCH_BaseModel
             end
             
             SimData =  w*[self.theta10, self.theta20, self.theta30, self.theta40, self.theta50]' + h2.^(0.5).*z;
-            
+            self.sigma2 = h2;
         end
         
         
@@ -91,6 +91,31 @@ classdef EGARCH_Ssn < EGARCH_BaseModel
             h2_pred = exp(log_h2_pred);
             
             VaR = (self.data(end, 1) - e(end, 1)) + sqrt(h2(end,1))*norminv(0.05,0,1);
+            VaR_exceeded = (VaR > self.data_plus(end,1));
+            
+            loss  = QLIKE(self.sigma2(end,1), h2_pred);
+            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
+        end
+        
+        function [loss, loss2, VaR_exceeded] = Predict(self)
+            [h2, e] = self.CondVar();
+            log_h2_pred = self.omega + ...
+                        self.alpha*( abs(e(end,1))/sqrt(h2(end,1)) ) + ...
+                        self.beta*log(h2(end,1)) + ...
+                        self.gamma*e(end,1)/sqrt(h2(end,1));
+                    
+            h2_pred = exp(log_h2_pred);
+            
+            w1 = (mod(self.day, 5) == 1);
+            w2 = (mod(self.day, 5) == 2);
+            w3 = (mod(self.day, 5) == 3);
+            w4 = (mod(self.day, 5) == 4);
+            w5 = (mod(self.day, 5) == 0);
+            
+            VaR = self.theta1*w1(end,1)...
+            + self.theta2*w2(end,1) + self.theta3*w3(end,1) + self.theta4*w4(end,1) + self.theta5*w5(end,1) ...
+            + sqrt(h2_pred)*norminv(0.05,0,1);
+            
             VaR_exceeded = (VaR > self.data_plus(end,1));
             
             day_tmp = self.day;

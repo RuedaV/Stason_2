@@ -38,24 +38,7 @@ classdef (Abstract) GJR_BaseModel < IBasicModel
         function setDaily (self, d)                           
         end
         
-        function [loss, loss2, VaR_exceeded] = Predict(self)
-            [h2, e] = self.CondVar();
-            h2_pred = self.omega + self.alpha*e(end,1)^2 ...
-                    + self.beta*h2(end,1) + self.gamma*(e(end,1)<0)*e(end,1)^2;
-                
-            VaR = (self.data(end, 1) - e(end, 1)) + sqrt(h2(end,1))*norminv(0.05,0,1);
-            VaR_exceeded = (VaR > self.data_plus(end,1));
-            
-            data_temp = self.data;            
-            self.data = self.data_plus;
-            self.Switch();
-            [h2_plus, e_plus] = self.CondVar();
-            h2_proxy = h2_plus(end, 1);
-            self.Switch();
-            self.data = data_temp;
-            loss  = QLIKE(h2_proxy, h2_pred);
-            loss2 = QLIKE2(h2_proxy, h2_pred);
-        end
+       
         
     end
     

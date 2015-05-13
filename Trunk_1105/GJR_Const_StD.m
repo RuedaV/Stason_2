@@ -44,6 +44,7 @@ classdef GJR_Const_StD < GJR_BaseModel
                     self.beta0*h2(i-1,1) + self.gamma0*h2(i-1,1)*z(i-1,1)^2*(z(i-1,1) < 0);
             end
             SimData = self.mu0 + self.delta0*h2.^0.5 + sqrt(h2).*z;
+            self.sigma2 = h2;
         end
     end
 

@@ -46,8 +46,26 @@ classdef EGARCH_Const_AR < EGARCH_BaseModel
                 h2(i,1) = exp(log_h2(i,1));
                 SimData(i,1) = self.mu0 + self.rho0*SimData(i-1,1) + sqrt(h2(i,1))*z(i,1);
             end
+            self.sigma2 = h2;
             
         end
+        
+        function [loss, loss2, VaR_exceeded] = Predict(self, p)
+            [h2, e] = self.CondVar();
+            log_h2_pred = self.omega + ...
+                        self.alpha*( abs(e(end,1))/sqrt(h2(end,1)) ) + ...
+                        self.beta*log(h2(end,1)) + ...
+                        self.gamma*e(end,1)/sqrt(h2(end,1));
+                    
+            h2_pred = exp(log_h2_pred);
+            
+            VaR = self.mu + self.rho*self.data(end,1) + sqrt(h2_pred)*norminv(p,0,1);
+            VaR_exceeded = (VaR > self.data_plus(end,1));
+            
+            loss  = QLIKE(self.sigma2(end,1), h2_pred);
+            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
+        end
+       
     end
 
     methods (Access = protected)

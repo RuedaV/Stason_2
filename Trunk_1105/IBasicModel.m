@@ -3,8 +3,7 @@ classdef (Abstract) IBasicModel < handle
     properties 
         data, % данные для оценивания
         data_plus, % данные чисто для построения функции потерь, чтобы считать ошибки
-        % Данные для колибрования
-        % массив векторов для разных индексов
+        sigma2, % то, что насимулировали
         collibration,
         % error
         errors
