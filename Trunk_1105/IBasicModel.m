@@ -1,4 +1,4 @@
-classdef (Abstract) IBasicModel < handle
+classdef (Abstract) IBasicModel < matlab.mixin.Copyable
     % Свойства (переменные обьекта)
     properties 
         data, % данные для оценивания
