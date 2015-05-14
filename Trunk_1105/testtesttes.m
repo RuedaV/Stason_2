@@ -26,7 +26,5 @@ gamma0 = GAMMA;
 S = SIMULATION_NUMBER;
 T = 1000;
 MODEL1 = GJR_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
-
-M = copy (MODEL1)
-M.mu0 = 5;
-disp (MODEL1.mu0)
+Data = MODEL1.Simulate (T);
+MainHist( Data, NBINS, '$\frac{\hat L - \hat L''}{L}$', strcat ('graphs\', strcat(class(MODEL1),'1')))
