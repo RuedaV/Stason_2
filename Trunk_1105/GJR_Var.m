@@ -30,17 +30,16 @@ classdef GJR_Var < GJR_BaseModel
             fprintf('%6s %12.6f %12.6f\n', 'gamma', self.gamma0, self.gamma);
         end 
         
-        function [loss, loss2, VaR_exceeded] = Predict(self)
+        function [loss, VaR_true, VaR_pred] = Predict(self, p)
             [h2, e] = self.CondVar();
             h2_pred = self.omega + self.alpha*e(end,1)^2 ...
                     + self.beta*h2(end,1) + self.gamma*(e(end,1)<0)*e(end,1)^2;
                 
                         
-            VaR = self.delta*h2_pred + sqrt(h2_pred)*norminv(0.05,0,1);
-            VaR_exceeded = (VaR > self.data_plus(end,1));
+            VaR_pred = self.delta*h2_pred + sqrt(h2_pred)*norminv(p,0,1);
+            VaR_true = self.delta0*h2_pred + sqrt(self.sigma2(end,1))*norminv(p,0,1);
             
             loss  = QLIKE(self.sigma2(end,1), h2_pred);
-            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
         end
                 
     end

@@ -92,7 +92,7 @@ classdef EGARCH_General < EGARCH_BaseModel
             self.day = d;
         end
         
-        function [loss, loss2, VaR_exceeded] = Predict(self)
+        function [loss, VaR_true, VaR_pred] = Predict(self, p)
             [h2, e] = self.CondVar();
             log_h2_pred = self.omega + ...
                         self.alpha*( abs(e(end,1))/sqrt(h2(end,1)) ) + ...
@@ -107,14 +107,16 @@ classdef EGARCH_General < EGARCH_BaseModel
             w4 = (mod(self.day, 5) == 4);
             w5 = (mod(self.day, 5) == 0);
             
-            VaR = self.mu + self.rho*self.data(end,1) + self.delta*h2_pred + self.theta1*w1(end,1)...
+            VaR_pred = self.mu + self.rho*self.data(end,1) + self.delta*h2_pred + self.theta1*w1(end,1)...
             + self.theta2*w2(end,1) + self.theta3*w3(end,1) + self.theta4*w4(end,1) + self.theta5*w5(end,1) ...
-            + sqrt(h2_pred)*norminv(0.05,0,1);
+            + sqrt(h2_pred)*norminv(p,0,1);
+        
+            VaR_true = self.mu0 + self.rho0*self.data(end,1) + self.delta0*h2_pred + self.theta10*w1(end,1)...
+            + self.theta20*w2(end,1) + self.theta30*w3(end,1) + self.theta40*w4(end,1) + self.theta50*w5(end,1) ...
+            + sqrt(self.sigma2(end,1))*norminv(p,0,1);
             
-            VaR_exceeded = (VaR > self.data_plus(end,1));
             
             loss  = QLIKE(self.sigma2(end,1), h2_pred);
-            loss2 = QLIKE2(self.sigma2(end,1), h2_pred);
         end
         
         

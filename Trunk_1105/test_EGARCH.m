@@ -31,12 +31,14 @@ alpha  = zeros(S, 1);
 beta   = zeros(S, 1);
 gamma  = zeros(S, 1);
 loss   = zeros(S, 1);
-loss2  = zeros(S, 1);
-VaR_a  = 0;
-VaR_b  = 0;
-for i = 1:S
+VaR    = zeros(S, 1);
+
+
+err = 0;
+i = 1;
+while i <= S
     i
-%     try
+    try
     a  = EGARCH_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
     b  = EGARCH_Const(mu0, omega0, alpha0, beta0, gamma0);
     Data = a.Simulate(T);    
@@ -47,38 +49,40 @@ for i = 1:S
     b.sigma2 = a.sigma2;
     % True
     a.Estimate();
-    [loss_a, loss2_a, VaR_exceeded_a] = a.Predict(p);
-    VaR_a = VaR_a + VaR_exceeded_a;
-%     a.MyDisplay();
+    [loss_a, VaR_true_a, VaR_pred_a] = a.Predict(p);
+
     % False    
     b.Estimate();
-    [loss_b, loss2_b, VaR_exceeded_b] = b.Predict(p);
-    VaR_b = VaR_b + VaR_exceeded_b;
-%     b.MyDisplay();
+    [loss_b, VaR_true_b, VaR_pred_b] = b.Predict(p);
+    
     omega(i,1) = (a.omega - b.omega)/omega0;
     alpha(i,1) = (a.alpha - b.alpha)/alpha0;
     beta(i,1)  = (a.beta  - b.beta)/beta0;
     gamma(i,1) = (a.gamma - b.gamma)/gamma0;
-    loss(i,1)  = (loss_a - loss_b)/loss_a;
-    loss2(i,1)  = (loss2_a - loss2_b)/loss2_a;
-    i
-%     catch
-%         disp ('Îøèáêà');
-%     end
+    loss(i,1)  = (loss_a - loss_b)/QLIKE(a.sigma2(end,1),a.sigma2(end,1));
+    VaR(i,1)   = (VaR_pred_a - VaR_pred_b)/VaR_true_a;
+
+    if and(isnan(loss(i,1))== 0,(abs(omega(i,1)) < 10))
+        i = i + 1;
+        err = 0;
+    end
+    catch
+        err = err + 1;
+        disp ('Îøèáêà');  
+        if err > 10
+            i = i + 1;
+            err = 0;
+        end
+    end
 end
+
 nbins = NBINS;
 MyHistEl( omega, 0, nbins, '$\bf \omega$')
 MyHistEl( alpha, 0, nbins, '$\alpha$')
 MyHistEl( beta,  0, nbins, '$\beta$')
 MyHistEl( gamma, 0, nbins, '$\gamma$')
 MyHistEl( loss,  0, nbins, '$L$')
-% fprintf('\n%6s %12s %12s\r', 'Model',    'estimated','realized');
-% fprintf('%6s %12.6f %12.6f\n', 'True',    h2_pred_a,   h2_proxy_a);
-% fprintf('%6s %12.6f %12.6f\n', 'False',   h2_pred_b,   h2_proxy_b);
-
-fprintf('\n%6s %12s \r', 'Model', 'VaR is exceeded');
-fprintf('%6s %12.6f \n', 'True',    VaR_a);
-fprintf('%6s %12.6f \n', 'False',   VaR_b);
+MyHistEl( VaR,   0, nbins, '$VaR$')
 
 DisplayStats(omega, alpha, beta, gamma, loss);
 
@@ -104,7 +108,7 @@ alpha  = zeros(S, 1);
 beta   = zeros(S, 1);
 gamma  = zeros(S, 1);
 loss   = zeros(S, 1);
-loss2  = zeros(S, 1);
+
 VaR_a  = 0;
 VaR_b  = 0;
 for i = 1:S
@@ -199,7 +203,6 @@ alpha  = zeros(S, 1);
 beta   = zeros(S, 1);
 gamma  = zeros(S, 1);
 loss   = zeros(S, 1);
-loss2  = zeros(S, 1);
 VaR_a  = 0;
 VaR_b  = 0;
 for i = 1:S
@@ -310,7 +313,6 @@ alpha  = zeros(S, 1);
 beta   = zeros(S, 1);
 gamma  = zeros(S, 1);
 loss   = zeros(S, 1);
-loss2  = zeros(S, 1);
 VaR_a  = 0;
 VaR_b  = 0;
 for i = 1:S
