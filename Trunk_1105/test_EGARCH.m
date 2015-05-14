@@ -36,7 +36,7 @@ VaR_a  = 0;
 VaR_b  = 0;
 for i = 1:S
     i
-    try
+%     try
     a  = EGARCH_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
     b  = EGARCH_Const(mu0, omega0, alpha0, beta0, gamma0);
     Data = a.Simulate(T);    
@@ -62,9 +62,9 @@ for i = 1:S
     loss(i,1)  = (loss_a - loss_b)/loss_a;
     loss2(i,1)  = (loss2_a - loss2_b)/loss2_a;
     i
-    catch
-        disp ('Ошибка');
-    end
+%     catch
+%         disp ('Ошибка');
+%     end
 end
 nbins = NBINS;
 MyHistEl( omega, 0, nbins, '$\bf \omega$')

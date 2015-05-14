@@ -48,10 +48,6 @@ classdef (Abstract) IBasicModel < matlab.mixin.Copyable
             % и еще 5 на прозапас
         end
         
-        function [a_new, b_new] = Switch_pair(self, a, b)
-            a_new = b;
-            b_new = a;
-        end
     end 
      
     % функции виртуальные, которые надо переопределять в каждой реализации

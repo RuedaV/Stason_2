@@ -87,12 +87,5 @@ classdef EGARCH_AR < EGARCH_BaseModel
                 h2(i,1) = exp(log_h2(i,1));
             end   
         end       
-        function Switch(self)     
-                [self.rho,    self.rho0]     =  self.Switch_pair(self.rho,    self.rho0);            
-                [self.omega,  self.omega0]   =  self.Switch_pair(self.omega,  self.omega0);
-                [self.alpha,  self.alpha0]   =  self.Switch_pair(self.alpha,  self.alpha0);
-                [self.beta,   self.beta0]    =  self.Switch_pair(self.beta,   self.beta0);
-                [self.gamma,  self.gamma0]   =  self.Switch_pair(self.gamma,  self.gamma0);
-        end
     end
 end

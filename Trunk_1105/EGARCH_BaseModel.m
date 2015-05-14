@@ -34,6 +34,5 @@ classdef (Abstract) EGARCH_BaseModel < IBasicModel
         LogL(self)
         CondVar(self)
         GetX0 (self)
-        Switch(self) % просто меняет местами param0 и param
     end
 end

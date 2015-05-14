@@ -93,13 +93,7 @@ classdef EGARCH_Var < EGARCH_BaseModel
                 e(i,1) = self.data(i,1) - self.delta*h2(i,1);
             end  
         end       
-        function Switch(self) 
-                [self.delta,  self.delta0]   =  self.Switch_pair(self.delta,  self.delta0);            
-                [self.omega,  self.omega0]   =  self.Switch_pair(self.omega,  self.omega0);
-                [self.alpha,  self.alpha0]   =  self.Switch_pair(self.alpha,  self.alpha0);
-                [self.beta,   self.beta0]    =  self.Switch_pair(self.beta,   self.beta0);
-                [self.gamma,  self.gamma0]   =  self.Switch_pair(self.gamma,  self.gamma0);
-        end     
+ 
     end
 end
 

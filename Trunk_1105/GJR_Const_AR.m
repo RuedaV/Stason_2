@@ -99,13 +99,5 @@ classdef GJR_Const_AR < GJR_BaseModel
             end   
         end       
         
-        function Switch(self)   
-            [self.mu,    self.mu0]     =  self.Switch_pair(self.mu,    self.mu0);
-            [self.rho,   self.rho0]    =  self.Switch_pair(self.rho,   self.rho0);
-            [self.omega, self.omega0]  =  self.Switch_pair(self.omega, self.omega0);
-            [self.alpha, self.alpha0]  =  self.Switch_pair(self.alpha, self.alpha0);
-            [self.beta,  self.beta0]   =  self.Switch_pair(self.beta,  self.beta0);
-            [self.gamma, self.gamma0]  =  self.Switch_pair(self.gamma, self.gamma0);
-        end
     end
 end

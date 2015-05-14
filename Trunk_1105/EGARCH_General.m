@@ -193,18 +193,5 @@ classdef EGARCH_General < EGARCH_BaseModel
             end   
         end       
         
-        function Switch(self)     
-                [self.rho,    self.rho0]     =  self.Switch_pair(self.rho,    self.rho0);
-                [self.delta,  self.delta0]   =  self.Switch_pair(self.delta,  self.delta0);            
-                [self.theta1, self.theta10]  =  self.Switch_pair(self.theta1, self.theta10);
-                [self.theta2, self.theta20]  =  self.Switch_pair(self.theta2, self.theta20);
-                [self.theta3, self.theta30]  =  self.Switch_pair(self.theta3, self.theta30);
-                [self.theta4, self.theta40]  =  self.Switch_pair(self.theta4, self.theta40);
-                [self.theta5, self.theta50]  =  self.Switch_pair(self.theta5, self.theta50);            
-                [self.omega,  self.omega0]   =  self.Switch_pair(self.omega,  self.omega0);
-                [self.alpha,  self.alpha0]   =  self.Switch_pair(self.alpha,  self.alpha0);
-                [self.beta,   self.beta0]    =  self.Switch_pair(self.beta,   self.beta0);
-                [self.gamma,  self.gamma0]   =  self.Switch_pair(self.gamma,  self.gamma0);
-        end
     end
 end
