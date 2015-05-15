@@ -13,7 +13,7 @@ OMEGA = 0.000004;
 ALPHA = 0.033;
 BETTA = 0.9;
 GAMMA = 0.08;
-SIMULATION_NUMBER = 35;
+SIMULATION_NUMBER = 1500;
 NBINS = 50;
 p = 0.05;
 
@@ -33,21 +33,21 @@ theta50 = THETHA05;
 S = SIMULATION_NUMBER;
 T = 1000;
     
-a  = GJR_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
+% a  = GJR_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
 b  = GJR_Const(mu0, omega0, alpha0, beta0, gamma0);
-theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
-
-a  = GJR_Const_Var(mu0, delta0, omega0, alpha0, beta0, gamma0);
-theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
-
-a  = GJR_Ssn(theta10, theta20, theta30, theta40, theta50,omega0, alpha0, beta0, gamma0);
-theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
+% theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
+% 
+% a  = GJR_Const_Var(mu0, delta0, omega0, alpha0, beta0, gamma0);
+% theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
+% 
+% a  = GJR_Ssn(theta10, theta20, theta30, theta40, theta50,omega0, alpha0, beta0, gamma0);
+% theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
 
 a  = GJR_General(rho0, delta0, theta10, theta20, theta30, theta40, theta50,...
     omega0, alpha0, beta0, gamma0);
 theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
 
-%EGARCH
+%% EGARCH
 MUMUMU = 0.001;
 RHORHORHO = 0.15;
 DELTADELTADELTA = 3.303;
