@@ -1,5 +1,6 @@
 clear all
 close all
+
 MUMUMU = 0.001;
 RHORHORHO = 0.009;
 DELTADELTADELTA = 3.303;
@@ -12,7 +13,7 @@ OMEGA = 0.000004;
 ALPHA = 0.033;
 BETTA = 0.9;
 GAMMA = 0.08;
-SIMULATION_NUMBER = 15;
+SIMULATION_NUMBER = 35;
 NBINS = 50;
 p = 0.05;
 
@@ -22,11 +23,70 @@ omega0 = OMEGA;
 alpha0 = ALPHA;
 beta0 = BETTA;
 gamma0 = GAMMA;
+delta0 = DELTADELTADELTA;
+theta10 = THETHA01;
+theta20 = THETHA02;
+theta30 = THETHA03;
+theta40 = THETHA04;
+theta50 = THETHA05;
 
 S = SIMULATION_NUMBER;
-T = 10;
+T = 1000;
+    
+a  = GJR_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
+b  = GJR_Const(mu0, omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
 
-model1 = GJR_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
-model2 = GJR_Const(mu0, omega0, alpha0, beta0, gamma0);
+a  = GJR_Const_Var(mu0, delta0, omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
 
-theMainIteration(model1, model2, 0.05, S, T, NBINS, 'graphs\');
+a  = GJR_Ssn(theta10, theta20, theta30, theta40, theta50,omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
+
+a  = GJR_General(rho0, delta0, theta10, theta20, theta30, theta40, theta50,...
+    omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
+
+%EGARCH
+MUMUMU = 0.001;
+RHORHORHO = 0.15;
+DELTADELTADELTA = 3.303;
+OMEGA = -0.8;
+ALPHA = 0.25;
+BETTA = 0.93;
+GAMMA = -0.12;
+SIMULATION_NUMBER = 100;
+NBINS = 20;
+p = 0.05;
+THETHA01 = -0.000583391;
+THETHA02 = 0.0014;
+THETHA03 = 0.0022;
+THETHA04 = 0.0002;
+THETHA05 = 0.0016;
+
+mu0 = MUMUMU;
+rho0 = RHORHORHO;
+omega0 = OMEGA;
+alpha0 = ALPHA;
+beta0 = BETTA;
+gamma0 = GAMMA;
+delta0 = DELTADELTADELTA;
+theta10 = THETHA01;
+theta20 = THETHA02;
+theta30 = THETHA03;
+theta40 = THETHA04;
+theta50 = THETHA05;
+
+a  = EGARCH_Ssn(theta10, theta20, theta30, theta40, theta50,omega0, alpha0, beta0, gamma0);
+b  = EGARCH_Const(mu0, omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
+
+a  = EGARCH_General(rho0, delta0, theta10, theta20, theta30, theta40, theta50,...
+    omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 1);
+
+a  = EGARCH_Const_Var(mu0, delta0, omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
+
+a  = EGARCH_Const_AR(mu0, rho0, omega0, alpha0, beta0, gamma0);
+theMainIteration(a, b, 0.05, S, T, NBINS, 'graphs\', 0);
