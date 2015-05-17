@@ -73,7 +73,7 @@ try
     DisplayStats(omega, alpha, beta, gamma, loss);
 
     nbins = NBINS;
-    MainHist( omega, nbins, '$\bf \omega$', strcat (PATH, class(MODEL1), '_omega'))
+    MainHist( omega, nbins, '$\omega$', strcat (PATH, class(MODEL1), '_omega'))
     MainHist( alpha, nbins, '$\alpha$', strcat (PATH, class(MODEL1), '_alpha'))
     MainHist( beta,  nbins, '$\beta$', strcat (PATH, class(MODEL1), '_beta'))
     MainHist( gamma, nbins, '$\gamma$', strcat (PATH, class(MODEL1), '_gamma'))

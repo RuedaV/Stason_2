@@ -1,9 +1,14 @@
 function [] = MainHist( y, nbins, Text, fileName)
 z = sort(y);
 n = length(z);
-%     x = z;
-x = z(round(0.07*n)+1:round(0.93*n),1);
+%    x = z;
+ x = z(round(0.02*n)+1:round(0.98*n),1);
 figure1 = figure;
+
+% figure('units','normalized','outerposition',[0 0 1 1])
+% set(gcf, 'Units', 'Inches', 'Position', [0, 0, 17.25, 9.125], 'PaperUnits', 'Inches', 'PaperSize', [7.25, 9.125])
+
+
 set(figure1,'defaulttextinterpreter','latex');
 %histfit(x, nbins, 'kernel');
 set(gca, 'FontSize', 25);
@@ -45,4 +50,6 @@ h = get(gca, 'title');
 set(h, 'FontName', 'Helvetica', 'fontsize', 40, 'FontWeight','bold')
 hold off
 
-saveas(gcf, fileName, 'png')
+set(gcf, 'Position', get(0,'Screensize'));
+set(gcf, 'PaperPositionMode', 'auto')
+saveas(gcf, fileName, 'jpg')
