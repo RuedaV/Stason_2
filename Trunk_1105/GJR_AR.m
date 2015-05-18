@@ -30,9 +30,6 @@ classdef GJR_AR < GJR_BaseModel
             fprintf('%6s %12.6f %12.6f\n', 'gamma', self.gamma0, self.gamma);
         end
     
-        function res = Compare(self, x, rival)
-            res = 1;
-        end
         
          function [loss, VaR_true, VaR_pred] = Predict(self, p)
             [h2, e] = self.CondVar();
