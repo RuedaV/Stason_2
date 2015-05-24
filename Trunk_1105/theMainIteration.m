@@ -57,7 +57,7 @@ while i <= S
         loss(i,1)  = (loss_a - loss_b)/QLIKE(a.sigma2(end,1),a.sigma2(end,1));
         VaR(i,1)   = (VaR_pred_a - VaR_pred_b)/VaR_true_a;
 
-        if and(isnan(loss(i,1))== 0,(abs(omega(i,1)) < 10))
+        if and(isnan(loss(i,1))== 0,(abs(omega(i,1)) < 20))
             i = i + 1;
             err = 0;
         end

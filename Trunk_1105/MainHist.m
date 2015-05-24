@@ -29,7 +29,11 @@ if centers(i) - 0 < w/2
 else
     p = i-1;
 end
-fill(t([p p p+1 p+1]),[0 heights([p p]),0], 'r')
+
+try
+    fill(t([p p p+1 p+1]),[0 heights([p p]),0], 'r')
+catch
+end
 
 i = 1;
 while (centers(i) < quantile(x, 0.50))&&(i < length(centers))
