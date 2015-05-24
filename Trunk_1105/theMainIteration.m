@@ -1,4 +1,4 @@
-function [] = theMainIteration (MODEL1, MODEL2, p, S, T, NBINS, PATH, season)
+function [] = theMainIteration (MODEL1, MODEL2, p, S, T, NBINS, PATH, season, foldername)
 
 omega0 = MODEL1.omega;
 alpha0 = MODEL1.alpha;
@@ -14,6 +14,25 @@ VaR    = zeros(S, 1);
 VaR_a  = zeros(S, 1);
 VaR_b  = zeros(S, 1);
 r_last = zeros(S, 1);
+
+omegaA  = zeros(S, 1);
+alphaA  = zeros(S, 1);
+betaA   = zeros(S, 1);
+gammaA  = zeros(S, 1);
+lossA   = zeros(S, 1);
+VaRA    = zeros(S, 1);
+VaR_aA  = zeros(S, 1);
+VaR_bA  = zeros(S, 1);
+
+omegaB  = zeros(S, 1);
+alphaB  = zeros(S, 1);
+betaB   = zeros(S, 1);
+gammaB  = zeros(S, 1);
+lossB   = zeros(S, 1);
+VaRB    = zeros(S, 1);
+VaR_aB  = zeros(S, 1);
+VaR_bB  = zeros(S, 1);
+
 
 iteration_name = class(MODEL1);
 
@@ -57,6 +76,20 @@ while i <= S
         loss(i,1)  = (loss_a - loss_b)/QLIKE(a.sigma2(end,1),a.sigma2(end,1));
         VaR(i,1)   = (VaR_pred_a - VaR_pred_b)/VaR_true_a;
 
+        omegaA(i,1) = a.omega;
+        alphaA(i,1) = a.alpha;
+        betaA(i,1)  = a.beta;
+        gammaA(i,1) = a.gamma;
+        lossA(i,1)  = loss_a;
+        VaRA(i,1)   = VaR_pred_a;
+        
+        omegaB(i,1) = b.omega;
+        alphaB(i,1) = b.alpha;
+        betaB(i,1)  = b.beta;
+        gammaB(i,1) = b.gamma;
+        lossB(i,1)  = loss_b;
+        VaRB(i,1)   = VaR_pred_b;
+        
         if and(isnan(loss(i,1))== 0,(abs(omega(i,1)) < 20))
             i = i + 1;
             err = 0;
@@ -70,26 +103,26 @@ while i <= S
     end
 end
 try 
-    DisplayStats(omega, alpha, beta, gamma, loss);
-
-    nbins = NBINS;
-    MainHist( omega, nbins, '$\omega$', strcat (PATH, class(MODEL1), '_omega'))
-    MainHist( alpha, nbins, '$\alpha$', strcat (PATH, class(MODEL1), '_alpha'))
-    MainHist( beta,  nbins, '$\beta$', strcat (PATH, class(MODEL1), '_beta'))
-    MainHist( gamma, nbins, '$\gamma$', strcat (PATH, class(MODEL1), '_gamma'))
-    MainHist( loss,  nbins, '$L$', strcat (PATH, class(MODEL1), '_loss'))
-    MainHist( VaR,   nbins, '$VaR$',strcat (PATH, class(MODEL1), '_var'))
+%     DisplayStats(omega, alpha, beta, gamma, loss);
+% 
+%     nbins = NBINS;
+%     MainHist( omega, nbins, '$\omega$', strcat (PATH, class(MODEL1), '_omega'))
+%     MainHist( alpha, nbins, '$\alpha$', strcat (PATH, class(MODEL1), '_alpha'))
+%     MainHist( beta,  nbins, '$\beta$', strcat (PATH, class(MODEL1), '_beta'))
+%     MainHist( gamma, nbins, '$\gamma$', strcat (PATH, class(MODEL1), '_gamma'))
+%     MainHist( loss,  nbins, '$L$', strcat (PATH, class(MODEL1), '_loss'))
+%     MainHist( VaR,   nbins, '$VaR$',strcat (PATH, class(MODEL1), '_var'))
 catch
 end
 try 
-    QOmega = quantile(omega, 0.5) / (quantile(omega, 0.75) - quantile(omega, 0.25));
-    QAlpha = quantile(alpha, 0.5) / (quantile(alpha, 0.75) - quantile(alpha, 0.25));
-    QBeta = quantile(beta, 0.5) / (quantile(beta, 0.75) - quantile(beta, 0.25));
-    QGamma = quantile(gamma, 0.5) / (quantile(gamma, 0.75) - quantile(gamma, 0.25));
-    QLoss = quantile(loss, 0.5) / (quantile(loss, 0.75) - quantile(loss, 0.25));
-    QVar = quantile(VaR, 0.5) / (quantile(VaR, 0.75) - quantile(VaR, 0.25));
+%     QOmega = quantile(omega, 0.5) / (quantile(omega, 0.75) - quantile(omega, 0.25));
+%     QAlpha = quantile(alpha, 0.5) / (quantile(alpha, 0.75) - quantile(alpha, 0.25));
+%     QBeta = quantile(beta, 0.5) / (quantile(beta, 0.75) - quantile(beta, 0.25));
+%     QGamma = quantile(gamma, 0.5) / (quantile(gamma, 0.75) - quantile(gamma, 0.25));
+%     QLoss = quantile(loss, 0.5) / (quantile(loss, 0.75) - quantile(loss, 0.25));
+%     QVar = quantile(VaR, 0.5) / (quantile(VaR, 0.75) - quantile(VaR, 0.25));
 catch
 end   
 
-    save (strcat ('workspace\', iteration_name));
+    save (strcat (foldername, iteration_name));
 
