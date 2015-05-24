@@ -31,7 +31,8 @@ else
 end
 
 try
-    fill(t([p p p+1 p+1]),[0 heights([p p]),0], 'r')
+fill(t([p p p+1 p+1]),[0 heights([p p]),0], 'r')
+
 catch
 end
 
